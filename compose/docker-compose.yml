@@ -1,12 +1,14 @@
 version: "1.0"
 services:
   service1:
-    image: compose/service1
+    build:
+      context: ./service1
+      dockerfile: Dockerfile
     ports:
       - "8001:8001"
-    links:
-      - "service2"
   service2:
-    image: compose/service2
+    build:
+      context: ./service2
+      dockerfile: Dockerfile
     expose:
-      - "9001:9001"
+      - "9001"

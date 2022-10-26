@@ -1,4 +1,4 @@
-##How to run
+# How to run
 
 Build image from dockerfile in service folder
 
@@ -9,7 +9,11 @@ docker run --rm --name kontti1 -p 22:22 image_name
 Run the playbook:
 ansible-playbook -i hosts.yaml ansible.yaml -e "ansible_become_password=eee"
 
-##O1:
+# Analysis
+Uptime inside a container shows hosts uptime. The kernel does not track uptime for individual containers in this way.
+For me most difficult part was trying to make ansible work with the ip addresses of the containers. Had to use localhost instead because i had no time to figure out how to connect to the containers with the ip address. Also i felt like ansible documentation was hard to understand sometimes.
+
+# O1:
 PLAY [kontit] **********\*\*\*\***********\*\*\*\***********\*\*\*\***********\*\***********\*\*\*\***********\*\*\*\***********\*\*\*\***********
 
 TASK [Gathering Facts] **********\*\***********\*\*\*\***********\*\***********\***********\*\***********\*\*\*\***********\*\***********
@@ -31,7 +35,7 @@ ok: [kontti1]
 PLAY RECAP ************\*\*************\*\*************\*\*************\*************\*\*************\*\*************\*\*************
 kontti1 : ok=4 changed=1 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0
 
-##O2:
+# O2:
 PLAY [kontit] ************************\*\*\*\*************************\*\*************************\*\*\*\*************************
 
 TASK [Gathering Facts] **********************\*\*\*\***********************\***********************\*\*\*\***********************
@@ -53,7 +57,7 @@ ok: [kontti1]
 PLAY RECAP **************************\*\***************************\***************************\*\***************************
 kontti1 : ok=4 changed=1 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0
 
-##O3:
+# O3:
 PLAY [kontit] ************************\*\*\*\*************************\*\*************************\*\*\*\*************************
 
 TASK [Gathering Facts] **********************\*\*\*\***********************\***********************\*\*\*\***********************
@@ -84,7 +88,7 @@ PLAY RECAP **************************\*\***************************\************
 kontti1 : ok=4 changed=1 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0
 kontti2 : ok=4 changed=1 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0
 
-##O4:
+# O4:
 
 PLAY [kontit] ************************\*\*\*\*************************\*\*************************\*\*\*\*************************
 
@@ -115,3 +119,6 @@ ok: [kontti2]
 PLAY RECAP **************************\*\***************************\***************************\*\***************************
 kontti1 : ok=4 changed=1 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0
 kontti2 : ok=4 changed=1 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0
+
+
+

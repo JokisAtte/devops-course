@@ -1,0 +1,10 @@
+kontit:
+  hosts:
+    kontti1:
+      ansible_host: localhost
+    kontti2:
+      ansible_host: localhost
+  vars:
+    ansible_user: ssluser
+    ansible_connection: ssh
+    ansible_ssh_private_key_file: /home/atte/.ssh/id_rsa

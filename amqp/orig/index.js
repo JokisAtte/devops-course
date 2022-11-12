@@ -14,19 +14,19 @@ setTimeout(() => {
         var exchange = "compse140.o";
 
         var key = "compse140.o";
-        var msg = "Hello World!";
+        var msg1 = "Hello World!";
+        var n = 1;
 
         /*         channel.assertExchange(exchange, "topic", {
           durable: false,
         }); */
-        channel.publish(exchange, key, Buffer.from(msg));
-        console.log(" [x] Sent %s:'%s'", key, msg);
+        for (var i = 1; i <= 3; i++) {
+          channel.publish(exchange, key, Buffer.from(`MSG_${i}`));
+          setTimeout(() => {
+            console.log(" [x] Sent %s:'%s'", key, `MSG_${i}`);
+          }, "3000");
+        }
       });
-
-      setTimeout(function () {
-        connection.close();
-        process.exit(0);
-      }, 500);
     }
   );
 }, "30000");

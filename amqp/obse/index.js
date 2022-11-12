@@ -2,7 +2,12 @@
 
 var amqp = require("amqplib/callback_api");
 var fs = require("fs");
+const express = require("express");
+const app = express();
+const port = 9001;
+
 let n = 1;
+const filename = "messages.txt";
 
 setTimeout(() => {
   amqp.connect(
@@ -95,7 +100,6 @@ setTimeout(() => {
 }, "28000");
 
 const writeToFile = async (n, topic, msg) => {
-  const filename = "messages.txt";
   const today = new Date();
   const timestamp = today.toISOString();
   const message = `${timestamp} ${n} ${msg} to ${topic} \n`;
@@ -107,3 +111,18 @@ const writeToFile = async (n, topic, msg) => {
   });
   return;
 };
+
+app.all("/", (req, res) => {
+  fs.readFile(filename, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log("data read succesfully");
+    res.status(200).send(data);
+  });
+});
+
+app.listen(port, () => {
+  console.log(`App 2 listening port ${port}`);
+});

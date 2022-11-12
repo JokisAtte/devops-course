@@ -41,7 +41,9 @@ setTimeout(() => {
                   msg.content.toString()
                 );
                 message = msg.content.toString();
-                sendMessage(message);
+                setTimeout(() => {
+                  sendMessage(message);
+                }, 1000);
               },
               {
                 noAck: true,
@@ -69,14 +71,10 @@ const sendMessage = (message) => {
         channel.assertExchange(exchange2, "topic", {
           durable: false,
         });
-        channel.publish(exchange2, "compse140.i", Buffer.from(message));
-        console.log(" [x] Sent %s:'%s'", "compse140.i", message);
+        const send = `Got ${message}`;
+        channel.publish(exchange2, "compse140.i", Buffer.from(send));
+        console.log(" [x] Sent %s:'%s'", "compse140.i", send);
       });
-
-      setTimeout(function () {
-        connection.close();
-        process.exit(0);
-      }, 500);
     }
   );
 };

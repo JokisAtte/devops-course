@@ -12,14 +12,7 @@ setTimeout(() => {
           throw error1;
         }
         var exchange = "compse140.o";
-
         var key = "compse140.o";
-        var msg1 = "Hello World!";
-        var n = 1;
-
-        /*         channel.assertExchange(exchange, "topic", {
-          durable: false,
-        }); */
         for (var i = 1; i <= 3; i++) {
           channel.publish(exchange, key, Buffer.from(`MSG_${i}`));
           setTimeout(() => {

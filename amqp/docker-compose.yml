@@ -4,24 +4,37 @@ services:
     build:
       context: ./orig
       dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   imed:
     build:
       context: ./imed
       dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   obse:
     build:
       context: ./obse
       dockerfile: Dockerfile
     expose:
       - 9001:9001
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   httpserv:
     build:
       context: ./httpserv
       dockerfile: Dockerfile
     ports:
       - 8080:8080
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   rabbitmq:
-    image: "rabbitmq:3-management"
+    build:
+      dockerfile: Dockerfile
     expose:
       - 5672:5672
     ports:
@@ -30,3 +43,9 @@ services:
       AMQP_URL: "amqp://rabbitmq?connection_attempts=5&retry_delay=5"
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 7s

@@ -37,8 +37,6 @@ services:
       dockerfile: Dockerfile
     expose:
       - 5672:5672
-    ports:
-      - 15672:15672
     environment:
       AMQP_URL: "amqp://rabbitmq?connection_attempts=5&retry_delay=5"
       RABBITMQ_DEFAULT_USER: "guest"

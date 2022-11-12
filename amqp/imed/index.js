@@ -30,7 +30,6 @@ setTimeout(() => {
               throw error2;
             }
             console.log(" [*] Waiting for logs. To exit press CTRL+C");
-            console.log(q);
             channel.bindQueue(q.queue, exchange, "#");
 
             channel.consume(
@@ -41,7 +40,7 @@ setTimeout(() => {
                   msg.fields.routingKey,
                   msg.content.toString()
                 );
-                message = msg;
+                message = msg.content.toString();
                 sendMessage(message);
               },
               {
@@ -70,11 +69,7 @@ const sendMessage = (message) => {
         channel.assertExchange(exchange2, "topic", {
           durable: false,
         });
-        channel.publish(
-          exchange2,
-          "compse140.i",
-          Buffer.from(JSON.stringify(message))
-        );
+        channel.publish(exchange2, "compse140.i", Buffer.from(message));
         console.log(" [x] Sent %s:'%s'", "compse140.i", message);
       });
 

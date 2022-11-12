@@ -2,7 +2,6 @@
 
 var amqp = require("amqplib/callback_api");
 
-var dateoptions = {};
 var n = 1;
 setTimeout(() => {
   amqp.connect(
@@ -15,12 +14,12 @@ setTimeout(() => {
         if (error1) {
           throw error1;
         }
-        var exchange = "compose104.o";
+        var exchange = "compse140.o";
 
-        channel.assertExchange(exchange, "topic", {
+        /*         channel.assertExchange(exchange, "topic", {
           durable: false,
         });
-
+ */
         channel.assertQueue(
           "",
           {
@@ -38,7 +37,7 @@ setTimeout(() => {
               q.queue,
               function (msg) {
                 const today = new Date();
-                const string = `${Date.toISOString()} ${n} ${msg} to ${exchange}`;
+                //const string = `${Date.toISOString()} ${n} ${msg} to ${exchange}`;
                 n = +1;
                 console.log(
                   " [x] %s:'%s'",
@@ -58,11 +57,11 @@ setTimeout(() => {
         if (error1) {
           throw error1;
         }
-        var exchange2 = "compose104.i";
+        var exchange2 = "compse140.i";
 
-        channel.assertExchange(exchange2, "topic", {
+        /*         channel.assertExchange(exchange2, "topic", {
           durable: false,
-        });
+        }); */
 
         channel.assertQueue(
           "",
@@ -75,13 +74,13 @@ setTimeout(() => {
             }
             console.log(" [*] Waiting for logs. To exit press CTRL+C");
 
-            channel.bindQueue("", exchange2, "#");
+            channel.bindQueue(q.queue, exchange2, "#");
 
             channel.consume(
               q.queue,
               function (msg) {
                 const today = new Date();
-                const string = `${Date.toISOString()} ${n} ${msg} to ${exchange2}`;
+                //const string = `${Date.toISOString()} ${n} ${msg} to ${exchange2}`;
                 n = +1;
                 console.log(
                   " [x] %s:'%s'",
@@ -98,4 +97,4 @@ setTimeout(() => {
       });
     }
   );
-}, "25000");
+}, "28000");

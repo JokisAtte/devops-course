@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 var amqp = require("amqplib/callback_api");
+var fs = require("fs");
+let n = 1;
 
-var n = 1;
 setTimeout(() => {
   amqp.connect(
     "amqp://rabbitmq?connection_attempts=5&retry_delay=5",
@@ -16,10 +17,6 @@ setTimeout(() => {
         }
         var exchange = "compse140.o";
 
-        /*         channel.assertExchange(exchange, "topic", {
-          durable: false,
-        });
- */
         channel.assertQueue(
           "",
           {
@@ -36,14 +33,13 @@ setTimeout(() => {
             channel.consume(
               q.queue,
               function (msg) {
-                const today = new Date();
-                //const string = `${Date.toISOString()} ${n} ${msg} to ${exchange}`;
-                n = +1;
                 console.log(
                   " [x] %s:'%s'",
                   msg.fields.routingKey,
                   msg.content.toString()
                 );
+                writeToFile(n, exchange, msg.content.toString());
+                n = n + 1;
               },
               {
                 noAck: true,
@@ -59,9 +55,9 @@ setTimeout(() => {
         }
         var exchange2 = "compse140.i";
 
-        /*         channel.assertExchange(exchange2, "topic", {
+        channel.assertExchange(exchange2, "topic", {
           durable: false,
-        }); */
+        });
 
         channel.assertQueue(
           "",
@@ -79,14 +75,13 @@ setTimeout(() => {
             channel.consume(
               q.queue,
               function (msg) {
-                const today = new Date();
-                //const string = `${Date.toISOString()} ${n} ${msg} to ${exchange2}`;
-                n = +1;
                 console.log(
                   " [x] %s:'%s'",
                   msg.fields.routingKey,
                   msg.content.toString()
                 );
+                writeToFile(n, exchange2, msg.content.toString());
+                n = n + 1;
               },
               {
                 noAck: true,
@@ -98,3 +93,17 @@ setTimeout(() => {
     }
   );
 }, "28000");
+
+const writeToFile = async (n, topic, msg) => {
+  const filename = "messages.txt";
+  const today = new Date();
+  const timestamp = today.toISOString();
+  const message = `${timestamp} ${n} ${msg} to ${topic} \n`;
+  fs.appendFile(filename, message, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    console.log("Written: ", message);
+  });
+  return;
+};

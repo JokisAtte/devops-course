@@ -7,7 +7,7 @@ setTimeout(() => {
       if (error0) {
         throw error0;
       }
-      connection.createChannel(function (error1, channel) {
+      connection.createChannel(async function (error1, channel) {
         if (error1) {
           throw error1;
         }
@@ -15,11 +15,14 @@ setTimeout(() => {
         var key = "compse140.o";
         for (var i = 1; i <= 3; i++) {
           channel.publish(exchange, key, Buffer.from(`MSG_${i}`));
-          setTimeout(() => {
-            console.log(" [x] Sent %s:'%s'", key, `MSG_${i}`);
-          }, "3000");
+          console.log(" [x] Sent %s:'%s'", key, `MSG_${i}`);
+          await sleep(3000);
         }
       });
     }
   );
-}, "30000");
+}, "5000");
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

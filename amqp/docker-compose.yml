@@ -45,7 +45,7 @@ services:
       RABBITMQ_DEFAULT_PASS: "guest"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:15672"]
-      interval: 1m30s
+      interval: 10s
       timeout: 10s
       retries: 3
       start_period: 7s

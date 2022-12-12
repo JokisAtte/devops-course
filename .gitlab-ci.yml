@@ -14,6 +14,7 @@ stages:
 build-code-job:
   stage: build
   script:
+    - cd api
     - npm install
   artifacts:
     paths:
@@ -23,6 +24,7 @@ build-code-job:
 test:
   stage: test
   script:
+    - cd api
     - npm run start
     - npm test
   artifacts:

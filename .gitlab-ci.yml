@@ -5,6 +5,8 @@
 # Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+image: node:latest
+
 stages:
   - build
   - test
@@ -12,11 +14,19 @@ stages:
 build-code-job:
   stage: build
   script:
-    - echo "build"
+    - npm install
+  artifacts:
+    paths:
+      - node_modules
 
-testi-testi:
-  stage: test
+
+test:
+  stage: run
   script:
-    - echo "jouu toimiiks"
+    - npm run start
+    - npm test
+  artifacts:
+    paths:
+      - node_modules/
 
 

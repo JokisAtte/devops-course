@@ -21,7 +21,7 @@ build-code-job:
 
 
 test:
-  stage: run
+  stage: test
   script:
     - npm run start
     - npm test

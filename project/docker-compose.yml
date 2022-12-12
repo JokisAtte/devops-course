@@ -7,6 +7,7 @@ services:
     hostname: 'localhost'
     container_name: gitlab-ce
     environment:
+      GITLAB_ROOT_PASSWORD: "12345678"
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://localhost'
     ports:
@@ -20,7 +21,7 @@ services:
       - gitlab
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
-    container_name: gitlab-runner    
+    container_name: gitlab-runner
     restart: always
     depends_on:
       - web

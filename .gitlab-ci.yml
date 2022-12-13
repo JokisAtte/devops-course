@@ -24,15 +24,7 @@ server-start:
   stage: test
   script:
     - cd api
-    - npm run start
-  artifacts:
-    paths:
-      - ./api/node_modules/
-
-run-tests:
-  stage: test
-  script:
-    - cd api
+    - npm run start:quiet
     - npm run test
   artifacts:
     paths:

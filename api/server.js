@@ -4,10 +4,10 @@ import bodyParser from "body-parser";
 import cors from "cors"
 import morgan from "morgan";
 
-import getMessages from "./endpoints/messages";
-import getState from "./endpoints/getState";
-import runLog from "./endpoints/runlog";
-import putState from "./endpoints/putState";
+import getMessages from "./endpoints/messages.js";
+import getState from "./endpoints/getState.js";
+import runLog from "./endpoints/runlog.js";
+import putState from "./endpoints/putState.js";
 
 const server = express();
 //server.use(bodyParser.json())
@@ -29,10 +29,5 @@ server.get("/state", (req,res)=> {
 server.get("/run-log", (req,res)=> {
     runLog()
 })
-
-/* const port = 8083
-server.listen(port, () =>
-console.log(`Server running on port ${port}, http://localhost:${port}`)
-); */
 
 export default server

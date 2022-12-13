@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "jest --verbose ./tests",
-    "start": "node index.js"
+    "start": "node index.js",
+    "start:quiet": "node index.js &"
   },
   "author": "",
   "license": "ISC",

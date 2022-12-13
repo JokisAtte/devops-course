@@ -20,13 +20,20 @@ build-code-job:
     paths:
       - ./api/node_modules
 
-test:
+server-start:
   stage: test
   script:
     - cd api
     - npm run start
-    - npm test
   artifacts:
     paths:
       - ./api/node_modules/
 
+run-tests:
+  stage: test
+  script:
+    - cd api
+    - npm run test
+  artifacts:
+    paths:
+      - ./api/node_modules/

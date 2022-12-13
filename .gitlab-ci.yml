@@ -16,6 +16,9 @@ build-code-job:
   script:
     - cd api
     - npm install
+  artifacts:
+    paths:
+      - ./api/node_modules
 
 test:
   stage: test
@@ -23,5 +26,7 @@ test:
     - cd api
     - npm run start
     - npm test
-
+  artifacts:
+    paths:
+      - ./api/node_modules/
 

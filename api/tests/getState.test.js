@@ -1,11 +1,9 @@
-import app from "../index.js"
-import supertest from "supertest"
-import { expectCt } from "helmet"
-import { response } from "express"
+import server from "../server.js"
+import {test, expect} from "jest"
+const request = supertest(server)
 
-const request = supertest(app)
-
-it("gets text response from the endpoint", async done => {
+test("gets text response from the endpoint", async done => {
     const res = await request.get("/state")
-    expect(response.status).toBe(200) 
+    expect(res.status).toBe(200) 
+    
 })

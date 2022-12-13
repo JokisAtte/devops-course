@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jest --verbose ./tests",
     "start": "node index.js",
-    "start:quiet": "node index.js &"
+    "start:quiet": "node  index.js &",
+    "test:watch": "jest --verbose --watch ./tests"
   },
   "author": "",
   "license": "ISC",

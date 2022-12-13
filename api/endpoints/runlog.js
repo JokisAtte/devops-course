@@ -3,4 +3,5 @@ const runLog = () => {
     console.log("/run-log Not implemented")
 }
 
-export default runLog
+//export default
+module.exports = runLog

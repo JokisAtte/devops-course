@@ -4,4 +4,5 @@ const getState = () => {
     console.log("get /state Not implemented")
 }
 
-export default getState
+module.exports = getState
+//export default getState

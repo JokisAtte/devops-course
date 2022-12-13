@@ -3,4 +3,5 @@ const putState = () => {
     console.log("put /state Not implemented")
 }
 
-export default putState
+//export default
+module.exports = putState

@@ -3,4 +3,5 @@ const getMessages = () => {
     console.log("/messages Not implemented")
 }
 
-export default getMessages
+//export default
+module.exports = getMessages

@@ -1,15 +1,16 @@
 //const express = require('express');
-import express from "express"
-import bodyParser from "body-parser";
-import cors from "cors"
-import morgan from "morgan";
+const express =  require("express");
+const bodyParser =  require("body-parser");
+const cors =  require("cors");
+const morgan =  require("morgan");
 
-import getMessages from "./endpoints/messages.js";
-import getState from "./endpoints/getState.js";
-import runLog from "./endpoints/runlog.js";
-import putState from "./endpoints/putState.js";
+const getMessages =  require("./endpoints/messages.js");
+const getState =  require("./endpoints/getState.js");
+const runLog =  require("./endpoints/runlog.js");
+const putState =  require("./endpoints/putState.js");
 
 const server = express();
+
 //server.use(bodyParser.json())
 server.use(cors())
 server.use(morgan('combined'));
@@ -30,4 +31,4 @@ server.get("/run-log", (req,res)=> {
     runLog()
 })
 
-export default server
+module.exports = server

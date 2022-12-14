@@ -26,9 +26,8 @@ server-start:
     - cd api
     - npm run start:quiet
     - cd ..
-    - cd amqp
+    - apk add --no-cache docker-compose
     - docker-compose -f "amqp/docker-compose.yml" up -d --build
-    - cd ..
     - cd api
     - npm run test
   artifacts:

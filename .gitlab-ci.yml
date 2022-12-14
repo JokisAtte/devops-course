@@ -26,7 +26,8 @@ server-start:
     - cd api
     - npm run start:quiet
     - cd ..
-    - apk add --no-cache docker-compose
+    - apt-get update
+    - apt-get install docker-compose-plugin
     - docker-compose -f "amqp/docker-compose.yml" up -d --build
     - cd api
     - npm run test

@@ -3,11 +3,16 @@
 var amqp = require("amqplib/callback_api");
 var fs = require("fs");
 const express = require("express");
+const { setMaxIdleHTTPParsers } = require("http");
 const app = express();
 const port = 9001;
 
 let n = 1;
 const filename = "messages.txt";
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 amqp.connect(
   "amqp://rabbitmq?connection_attempts=5&retry_delay=5",
@@ -15,12 +20,12 @@ amqp.connect(
     if (error0) {
       throw error0;
     }
-    connection.createChannel(function (error1, channel) {
+    connection.createChannel(async function (error1, channel) {
       if (error1) {
         throw error1;
       }
       var exchange = "compse140.o";
-
+      await sleep(4000)
       channel.assertQueue(
         "",
         {

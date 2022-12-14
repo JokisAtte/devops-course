@@ -13,15 +13,17 @@ setTimeout(() => {
         }
         var exchange = "compse140.o";
         var key = "compse140.o";
+        let i = 0
         while (true) {
           channel.publish(exchange, key, Buffer.from(`MSG_${i}`));
           console.log(" [x] Sent %s:'%s'", key, `MSG_${i}`);
+          i =+ 1
           await sleep(3000);
         }
       });
     }
   );
-}, "5000");
+}, "3000");
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

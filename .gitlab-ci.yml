@@ -25,6 +25,11 @@ server-start:
   script:
     - cd api
     - npm run start:quiet
+    - cd ..
+    - cd amqp
+    - docker-compose -f "amqp/docker-compose.yml" up -d --build
+    - cd ..
+    - cd api
     - npm run test
   artifacts:
     paths:

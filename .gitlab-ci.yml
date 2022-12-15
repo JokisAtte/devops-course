@@ -17,7 +17,7 @@ services:
 before_script:
   - apk update
   - apk add nodejs npm
-  - apk add docker docker-cli-compose
+  - apk add docker docker-compose
 
 build-code-job:
   stage: build

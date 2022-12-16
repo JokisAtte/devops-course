@@ -15,8 +15,9 @@ const server = express();
 server.use(cors())
 server.use(morgan('combined'));
 
-server.get("/messages", (req,res) => {
-    getMessages()
+server.get("/messages", async (req,res) => {
+    const messages = await getMessages()
+    res.status(200).send(messages)
 })
 
 server.put("/state", (req,res) => {

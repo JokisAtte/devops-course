@@ -1,15 +1,15 @@
 const server =  require("../server.js");
 const supertest = require("supertest")
 
-const request = supertest(server)
+const request = supertest()
 
 describe("GET /messages endpoint tests", () => {
-    it("gets text response from the endpoint", async done => {
-        const res = await request.get("/messages")
-        expect(res.status).toBe(200)
-    })
-    it("gets text response", async done => {
-        const res = await request.get("/state")
-        expect(res.data).toBe(String)
+    it("status 200 and response is text", done => {
+        supertest(server)
+        .get("/messages")
+        .expect(200)
+        .expect("Content-Type", "text/html; charset=utf-8")
+        .end((err, res) => {
+            err ? done(err) : done()})
     })
 })

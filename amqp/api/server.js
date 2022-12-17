@@ -10,10 +10,9 @@ const {getState, putState} =  require("./endpoints/state.js");
 
 const server = express();
 
-//server.use(bodyParser.json())
 server.use(cors())
 server.use(morgan('combined'));
-
+server.use(express.text({type:"*/*"})) //Any Content-Type is populated in request body as text
 let STATE = "INIT"
 
 server.get("/messages", async (req,res) => {
@@ -22,8 +21,9 @@ server.get("/messages", async (req,res) => {
 })
 
 server.put("/state", (req,res) => {
-    // Lähetä komentoja kontteihin
-    
+    const states = ["INIT", "PAUSED", "RUNNING","SHUTDOWN"]
+    const newState = req.body
+    if(states.includes(newState)){}
     putState()
 })
 

@@ -10,8 +10,27 @@ server.use(express.text({ type: '*/*' }))
 describe('PUT /state', () => {
     it('Changes state', (done) => {
         const newState = 'PAUSED'
-        supertest(server).put('/state').send(newState).expect(200)
-        /*         supertest(server)
+        supertest(server)
+            .put('/state')
+            .send(newState)
+            .expect(200)
+            .end((err, res) => {
+                return err ? done(err) : done()
+            })
+    })
+    it('Returns eror if new state is invalid', (done) => {
+        const newState = 'INVALID'
+        supertest(server)
+            .put('/state')
+            .send(newState)
+            .expect(400)
+            .end((err, res) => {
+                return err ? done(err) : done()
+            })
+    })
+})
+
+/*         supertest(server)
             .get('/state')
             .expect(200)
             .then((res) => {
@@ -24,8 +43,7 @@ describe('PUT /state', () => {
                         expect(res.text).toEqual(newState)
                     })
             }) */
-    })
-})
+
 /*         console.log(currentState)
         supertest(server)
         .put("/state")

@@ -10,6 +10,6 @@ describe("GET /messages endpoint tests", () => {
         .expect(200)
         .expect("Content-Type", "text/html; charset=utf-8")
         .end((err, res) => {
-            err ? done(err) : done()})
+            return err ? done(err) : done()})
     })
 })

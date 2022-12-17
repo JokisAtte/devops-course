@@ -38,6 +38,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8083:8083
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   rabbitmq:
     build:
       dockerfile: Dockerfile

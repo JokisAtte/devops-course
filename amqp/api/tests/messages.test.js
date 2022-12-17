@@ -4,7 +4,7 @@ const supertest = require("supertest")
 const request = supertest()
 
 describe("GET /messages endpoint tests", () => {
-    it("status 200 and response is text", done => {
+    it("recieves status 200 and response is text", done => {
         supertest(server)
         .get("/messages")
         .expect(200)

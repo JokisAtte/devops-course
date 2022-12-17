@@ -5,9 +5,8 @@ const cors =  require("cors");
 const morgan =  require("morgan");
 
 const getMessages =  require("./endpoints/messages.js");
-const getState =  require("./endpoints/getState.js");
 const runLog =  require("./endpoints/runlog.js");
-const putState =  require("./endpoints/putState.js");
+const {getState, putState} =  require("./endpoints/state.js");
 
 const server = express();
 
@@ -16,8 +15,8 @@ server.use(cors())
 server.use(morgan('combined'));
 
 server.get("/messages", async (req,res) => {
-    const messages = await getMessages()
-    res.status(200).send(messages)
+        const messages = await getMessages()
+        res.status(200).send(messages)
 })
 
 server.put("/state", (req,res) => {

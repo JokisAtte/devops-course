@@ -12,11 +12,10 @@ setTimeout(() => {
           throw error1;
         }
         var exchange = "compse140.o";
-        var key = "compse140.o";
         let i = 0
         while (true) {
-          channel.publish(exchange, key, Buffer.from(`MSG_${i}`));
-          console.log(" [x] Sent %s:'%s'", key, `MSG_${i}`);
+          channel.publish(exchange, exchange, Buffer.from(`MSG_${i}`));
+          console.log(" [x] Sent %s:'%s'", exchange, `MSG_${i}`);
           i =+ 1
           await sleep(3000);
         }

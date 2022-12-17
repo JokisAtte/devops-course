@@ -18,7 +18,7 @@ describe('PUT /state', () => {
                 return err ? done(err) : done()
             })
     })
-    it('Returns eror if new state is invalid', (done) => {
+    it('Returns error if new state is invalid', (done) => {
         const newState = 'INVALID'
         supertest(server)
             .put('/state')

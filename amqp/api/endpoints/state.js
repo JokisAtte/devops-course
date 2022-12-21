@@ -6,7 +6,7 @@ const getState = () => {
     console.log('get /state Not implemented')
 }
 
-const getOrigContainerId = async () => {
+/* const getOrigContainerId = async () => {
     const options = {
         socketPath: '/var/run/docker.sock',
         path: 'http://localhost/containers/json?ancestor=amqp-orig',
@@ -18,6 +18,27 @@ const getOrigContainerId = async () => {
             res.on('data', (res) => {
                 data = JSON.parse(res)
                 orig = data.filter((c) => c.Image === 'amqp-orig')
+                resolve(orig[0].Id)
+            })
+            res.on('error', (data) => reject(data))
+        }
+        const clientRequest = http.request(options, callback)
+        clientRequest.end()
+    })
+} */
+
+const getContainerId = async (imageName) => {
+    const options = {
+        socketPath: '/var/run/docker.sock',
+        path: `http://localhost/containers/json?ancestor=${imageName}`,
+    }
+
+    return new Promise((resolve, reject) => {
+        const callback = (res) => {
+            res.setEncoding('utf8')
+            res.on('data', (res) => {
+                data = JSON.parse(res)
+                orig = data.filter((c) => c.Image === imageName)
                 resolve(orig[0].Id)
             })
             res.on('error', (data) => reject(data))
@@ -64,7 +85,7 @@ async function pauseContainer(containerId) {
 const putState = async (newState) => {
     if (newState === 'INIT') {
     } else if (newState === 'PAUSED') {
-        const id = await getOrigContainerId()
+        const id = await getContainerId('amqp-orig')
         const [paused, error] = await pauseContainer(id)
         error && console.log(error)
         return paused

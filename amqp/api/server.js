@@ -24,15 +24,11 @@ server.put('/state', (req, res) => {
     const states = ['INIT', 'PAUSED', 'RUNNING', 'SHUTDOWN']
     const body = req.body
     const newState = body.replace(/['"]+/g, '') // trim quotemarks from the input
-    console.log('Uus state:', newState)
-    console.log('Vanha state:', STATE)
-    console.log(states.includes(newState))
-    console.log(newState != STATE)
     if (states.includes(newState) && newState != STATE) {
         const result = putState(newState)
         if (result) {
             STATE = newState
-            res.status(200).send()
+            res.status(200).send(STATE)
         }
     }
     res.status(400).send('bad request or new state is equal to previous state')

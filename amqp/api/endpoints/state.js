@@ -1,6 +1,5 @@
 const request = require('request')
 const http = require('http')
-const net = require('net')
 
 const getState = () => {
     // TODO
@@ -19,7 +18,6 @@ const getOrigContainerId = async () => {
             res.on('data', (res) => {
                 data = JSON.parse(res)
                 orig = data.filter((c) => c.Image === 'amqp-orig')
-                console.log(orig)
                 resolve(orig[0].Id)
             })
             res.on('error', (data) => reject(data))
@@ -29,11 +27,12 @@ const getOrigContainerId = async () => {
     })
 }
 
+// Returns a promise that resolves to a list [boolean, Error | undefined]
 async function pauseContainer(containerId) {
-    console.log('Pause: ', containerId)
     const options = {
         socketPath: '/var/run/docker.sock',
         path: `http://localhost/containers/${containerId}/pause`,
+        method: 'POST',
     }
     return new Promise((resolve, reject) => {
         const callback = (res) => {
@@ -42,19 +41,19 @@ async function pauseContainer(containerId) {
                 console.log('response:', response)
                 if (response.startsWith('HTTP/1.1 204')) {
                     console.log(`Container ${containerId} paused successfully`)
-                    resolve()
+                    resolve([true, undefined])
                 } else {
                     console.error(
                         `Error pausing container ${containerId}: ${response}`
                     )
-                    reject(new Error(response))
+                    reject([false, new Error(response)])
                 }
             })
             res.on('error', (error) => {
                 console.error(
                     `Error pausing container ${containerId}: ${error}`
                 )
-                reject(error)
+                reject([false, error])
             })
         }
         const clientRequest = http.request(options, callback)
@@ -66,10 +65,13 @@ const putState = async (newState) => {
     if (newState === 'INIT') {
     } else if (newState === 'PAUSED') {
         const id = await getOrigContainerId()
-        await pauseContainer(id)
+        const [paused, error] = await pauseContainer(id)
+        error && console.log(error)
+        return paused
     } else if (newState === 'SHUTDOWN') {
     } else if (newState === 'RUNNING') {
     }
+    return false
 }
 
 module.exports = { getState, putState }

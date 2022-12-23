@@ -127,6 +127,7 @@ async function stopAllContainers() {
         'gitlab/gitlab-ce:latest',
         'gitlab/gitlab-runner:alpine',
     ] //These are image names
+    // Using approach like this would cause many issues in real world
     let allContainersStopped = true
     resultAC &&
         allContainers.forEach(async (c) => {
@@ -183,6 +184,7 @@ async function restartAllContainers() {
         'gitlab/gitlab-ce:latest',
         'gitlab/gitlab-runner:alpine',
     ] //These are image names
+    // Using approach like this would cause many issues in real world
     let allContainersRestarted = true
     resultAC &&
         allContainers.forEach(async (c) => {
@@ -198,26 +200,37 @@ async function restartAllContainers() {
 }
 
 const putState = async (newState) => {
+    console.log('Begin putState')
     if (newState === 'INIT') {
+        console.log('Restarting all containers')
         const restarted = await restartAllContainers()
-        !restarted && console.log('Error with restarting all containers')
+        !restarted
+            ? console.log('Error with restarting all containers')
+            : console.log('Restart done')
+
         return restarted
     } else if (newState === 'PAUSED') {
+        console.log('Pausing orig container')
         const id = await getContainerId('amqp-orig')
         const [paused, error] = await pauseContainer(id)
-        error && console.log(error)
+        error ? console.log(error) : console.log('Orig paused')
+
         return paused
     } else if (newState === 'SHUTDOWN') {
+        console.log('Shutting down all containers')
         const stopped = await stopAllContainers()
-        !stopped && console.log('Error with stopping all containers')
+        !stopped
+            ? console.log('Error with stopping all containers')
+            : console.log('All containers stopped')
         return stopped
     } else if (newState === 'RUNNING') {
+        console.log('Restaring orig')
         const id = await getContainerId('amqp-orig')
         const [restarted, error] = await restartContainer(id)
-        error && console.log(error)
+        !error ? console.log(error) : console.log('Orig restarted')
         return restarted
     }
     return false
 }
 
-module.exports = { getState, putState }
+module.exports = { putState }

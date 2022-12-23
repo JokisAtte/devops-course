@@ -23,9 +23,11 @@ server.get('/messages', async (req, res) => {
 server.put('/state', async (req, res) => {
     const states = ['INIT', 'PAUSED', 'RUNNING', 'SHUTDOWN']
     const body = req.body
-    const newState = body.replace(/['"]+/g, '') // trim quotemarks from the input
+
+    const newState = body.replace(/['"]+/g, '').trim() // trim quotemarks from the input
+    console.log('Incoming state chage: ', STATE, ' -> ', newState)
     if (states.includes(newState) && newState != STATE) {
-        const result = putState(newState)
+        const result = await putState(newState)
         if (result) {
             STATE = newState
             res.status(200).send(STATE)

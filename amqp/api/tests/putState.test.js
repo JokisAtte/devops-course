@@ -8,15 +8,6 @@ server.use(express.text({ type: '*/*' }))
 
 //State starts from INIT and goes RUNNING so passing PAUSED should update the state and return ok when containers succesfully paused
 describe('PUT /state', () => {
-    beforeEach(() => {
-        supertest(server)
-            .put('/state')
-            .send('INIT')
-            .expect(200)
-            .end((err, res) => {
-                return err ? done(err) : done()
-            })
-    })
     it('Changes state to paused', (done) => {
         const newState = 'PAUSED'
         supertest(server)

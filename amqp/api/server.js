@@ -20,7 +20,7 @@ server.get('/messages', async (req, res) => {
     res.status(200).send(messages)
 })
 
-server.put('/state', (req, res) => {
+server.put('/state', async (req, res) => {
     const states = ['INIT', 'PAUSED', 'RUNNING', 'SHUTDOWN']
     const body = req.body
     const newState = body.replace(/['"]+/g, '') // trim quotemarks from the input

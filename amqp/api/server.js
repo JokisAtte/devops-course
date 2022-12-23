@@ -24,13 +24,14 @@ server.put('/state', async (req, res) => {
     const states = ['INIT', 'PAUSED', 'RUNNING', 'SHUTDOWN']
     const body = req.body
 
-    const newState = body.replace(/['"]+/g, '').trim() // trim quotemarks from the input
+    const newState = body.replace(/['"]+/g, '').trim() // trim quotemarks and spaces from the input
     console.log('Incoming state chage: ', STATE, ' -> ', newState)
     if (states.includes(newState) && newState != STATE) {
         const result = await putState(newState)
         if (result) {
             STATE = newState
             res.status(200).send(STATE)
+            return
         }
     }
     res.status(400).send('bad request or new state is equal to previous state')

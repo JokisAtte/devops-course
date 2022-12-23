@@ -34,25 +34,11 @@ async function pauseContainer(containerId) {
     }
     return new Promise((resolve, reject) => {
         const callback = (res) => {
-            res.on('data', (data) => {
-                const response = data.toString()
-                console.log('response:', response)
-                if (response.startsWith('HTTP/1.1 204')) {
-                    console.log(`Container ${containerId} paused successfully`)
-                    resolve([true, undefined])
-                } else {
-                    console.error(
-                        `Error pausing container ${containerId}: ${response}`
-                    )
-                    reject([false, new Error(response)])
-                }
-            })
-            res.on('error', (error) => {
-                console.error(
-                    `Error pausing container ${containerId}: ${error}`
-                )
-                reject([false, error])
-            })
+            if (res.statusCode == '204') {
+                resolve(true)
+            } else {
+                reject('error')
+            }
         }
         const clientRequest = http.request(options, callback)
         clientRequest.end()
@@ -212,10 +198,9 @@ const putState = async (newState) => {
     } else if (newState === 'PAUSED') {
         console.log('Pausing orig container')
         const id = await getContainerId('amqp-orig')
-        const [paused, error] = await pauseContainer(id)
-        error ? console.log(error) : console.log('Orig paused')
-
-        return paused
+        const result = await pauseContainer(id)
+        !result ? console.log('error') : console.log('Orig paused')
+        return result
     } else if (newState === 'SHUTDOWN') {
         console.log('Shutting down all containers')
         const stopped = await stopAllContainers()

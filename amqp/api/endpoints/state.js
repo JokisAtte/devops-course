@@ -21,10 +21,6 @@ const getContainerId = async (imageName) => {
     })
 }
 
-const logStateChange = (newState) => {
-    //TODO
-}
-
 // Returns a promise that resolves to a list [boolean, Error | undefined]
 async function pauseContainer(containerId) {
     const options = {
@@ -136,27 +132,15 @@ async function restartContainer(containerId) {
     }
     return new Promise((resolve, reject) => {
         const callback = (res) => {
-            res.on('data', (data) => {
-                const response = data.toString()
-                console.log('response:', response)
-                if (response.startsWith('HTTP/1.1 204')) {
-                    console.log(
-                        `Container ${containerId} restarted successfully`
-                    )
-                    resolve([true, undefined])
-                } else {
-                    console.error(
-                        `Error restarting container ${containerId}: ${response}`
-                    )
-                    reject([false, new Error(response)])
-                }
-            })
-            res.on('error', (error) => {
+            if (res.statusCode === 204) {
+                console.log(`Container ${containerId} restarted successfully`)
+                resolve([true, undefined])
+            } else {
                 console.error(
-                    `Error restarting container ${containerId}: ${error}`
+                    `Error restarting container ${containerId}: ${response}`
                 )
-                reject([false, error])
-            })
+                reject([false, new Error(response)])
+            }
         }
         const clientRequest = http.request(options, callback)
         clientRequest.end()
@@ -193,7 +177,6 @@ const putState = async (newState) => {
         !restarted
             ? console.log('Error with restarting all containers')
             : console.log('Restart done')
-
         return restarted
     } else if (newState === 'PAUSED') {
         console.log('Pausing orig container')

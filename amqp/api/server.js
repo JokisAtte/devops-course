@@ -3,10 +3,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
-
+const fs = require('fs')
 const getMessages = require('./endpoints/messages.js')
 const runLog = require('./endpoints/runlog.js')
-const { getState, putState } = require('./endpoints/state.js')
+const { putState } = require('./endpoints/state.js')
 
 const server = express()
 
@@ -14,6 +14,21 @@ server.use(cors())
 server.use(morgan('combined'))
 server.use(express.text({ type: '*/*' })) //Any Content-Type is populated in request body as text
 let STATE = 'INIT'
+
+logState()
+
+function logState() {
+    const today = new Date()
+    const timestamp = today.toISOString()
+    const message = `${timestamp}: ${STATE} \n`
+    fs.appendFile('log.txt', message, (err) => {
+        if (err) {
+            console.error(err)
+        }
+        console.log('Written: ', message)
+    })
+    return
+}
 
 server.get('/messages', async (req, res) => {
     const messages = await getMessages()
@@ -30,6 +45,7 @@ server.put('/state', async (req, res) => {
         const result = await putState(newState)
         if (result) {
             STATE = newState
+            logState()
             res.status(200).send(STATE)
             return
         }
@@ -42,7 +58,14 @@ server.get('/state', (req, res) => {
 })
 
 server.get('/run-log', (req, res) => {
-    runLog()
+    fs.readFile('log.txt', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+        console.log('data read succesfully')
+        res.status(200).send(data)
+    })
 })
 
 module.exports = server

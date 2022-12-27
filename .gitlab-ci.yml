@@ -10,15 +10,6 @@ image: ubuntu:20.04
 stages:
   - test
 
-before_script:
-  - apt update
-  - apt install nodejs -y
-  - apt install npm -y
-  - apt install curl -y
-  - mkdir -p ~/.docker/cli-plugins/
-  - curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-  - chmod +x ~/.docker/cli-plugins/docker-compose
-
 sonarqube-check:
   image:
     name: sonarsource/sonar-scanner-cli:latest
@@ -41,6 +32,14 @@ sonarqube-check:
 server-start:
   stage: test
   script:
+    - apt update
+    - apt install nodejs -y
+    - apt install npm -y
+    - apt install curl -y
+    - mkdir -p ~/.docker/cli-plugins/
+    - curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+    - chmod +x ~/.docker/cli-plugins/docker-compose
+    - export PATH=$PATH:~/.docker/cli-plugins/docker-compose
     - docker-compose -v
     - docker-compose -f "amqp/docker-compose.yml" up -d --build
     - docker exec amqp-api-1 npm run test

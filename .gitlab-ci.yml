@@ -17,7 +17,7 @@ services:
 before_script:
   - apk update
   - apk add nodejs npm
-  - apk add docker docker-compose
+  - apk --no-cache add docker-cli docker-cli-compose
 
 build-code-job:
   stage: build
@@ -26,7 +26,7 @@ build-code-job:
     - npm install
   artifacts:
     paths:
-      - ./api/node_modules
+      - .amqp/api/node_modules
 
 server-start:
   stage: test

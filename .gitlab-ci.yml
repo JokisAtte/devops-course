@@ -5,19 +5,17 @@
 # Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
-image: docker:stable
+image: ubuntu:20.04
 
 stages:
   - build
   - test
 
-services:
-  - docker:dind
-
 before_script:
   - apk update
   - apk add nodejs npm
-  - apk --no-cache add docker-cli docker-cli-compose
+  - curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
 
 build-code-job:
   stage: build

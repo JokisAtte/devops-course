@@ -8,7 +8,6 @@
 image: ubuntu:20.04
 
 stages:
-  - build
   - test
 
 before_script:
@@ -16,8 +15,9 @@ before_script:
   - apt install nodejs -y
   - apt install npm -y
   - apt install curl -y
-  - curl -L "https://github.com/docker/compose/releases/download/2.12.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  - chmod +x /usr/local/bin/docker-compose
+  - mkdir -p ~/.docker/cli-plugins/
+  - curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+  - chmod +x ~/.docker/cli-plugins/docker-compose
 
 sonarqube-check:
   image:
@@ -37,15 +37,6 @@ sonarqube-check:
     - merge_requests
     - project
     - develop
-
-build-code-job:
-  stage: build
-  script:
-    - cd amqp/api
-    - npm install
-  artifacts:
-    paths:
-      - .amqp/api/node_modules
 
 server-start:
   stage: test

@@ -18,7 +18,7 @@ describe('PUT /state', () => {
             })
     })
     jest.setTimeout(15000)
-    it('Changes state to running', async (done) => {
+    it('Changes state to running', (done) => {
         const newState = 'RUNNING'
         supertest(server)
             .put('/state')

@@ -22,7 +22,7 @@ before_script:
 build-code-job:
   stage: build
   script:
-    - cd api
+    - cd amqp/api
     - npm install
   artifacts:
     paths:

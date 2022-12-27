@@ -11,11 +11,7 @@ test:
   script:
     - docker-compose -f "amqp/docker-compose.yml" up -d --build
     - docker exec amqp-api-1 npm run test
-  tags:
-    - docker
 
 build:
   script:
     - docker-compose build
-  tags:
-    - docker

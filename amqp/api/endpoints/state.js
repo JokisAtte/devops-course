@@ -149,16 +149,21 @@ async function restartContainer(containerId) {
 
 async function restartAllContainers() {
     const [resultAC, allContainers] = await getAllContainers()
-    const excludedContainers = [
-        'amqp-api',
-        'gitlab/gitlab-ce:latest',
-        'gitlab/gitlab-runner:alpine',
+    const includedContainers = [
+        'amqp-httpserv',
+        'amqp-imed',
+        'amqp-obse',
+        'amqp-orig',
     ] //These are image names
-    // Using approach like this would cause many issues in real world
+    // Rabbitmq is excluded, because i cant figure out a way to run healthchecks or anything like that with the restart
     let allContainersRestarted = true
+    /*     const rabbitmq = allContainers.filter((c) => c.Image === 'amqp-rabbitmq')[0]
+    console.log('Nyt rabbit')
+    const RMQrestarted = await restartContainer(rabbitmq.Id) // Dont await this so code blocks
+    console.log('Nyt tehty') */
     resultAC &&
         allContainers.forEach(async (c) => {
-            if (!excludedContainers.includes(c.Image)) {
+            if (includedContainers.includes(c.Image)) {
                 const [result, error] = await restartContainer(c.Id)
                 if (!result) {
                     allContainersRestarted = false

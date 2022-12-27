@@ -38,7 +38,12 @@ server.get('/messages', async (req, res) => {
 server.put('/state', async (req, res) => {
     const states = ['INIT', 'PAUSED', 'RUNNING', 'SHUTDOWN']
     const body = req.body
-
+    if (body.length < 1) {
+        res.status(400).send(
+            'bad request or new state is equal to previous state'
+        )
+        return
+    }
     const newState = body.replace(/['"]+/g, '').trim() // trim quotemarks and spaces from the input
     console.log('Incoming state chage: ', STATE, ' -> ', newState)
     if (states.includes(newState) && newState != STATE) {
@@ -46,11 +51,16 @@ server.put('/state', async (req, res) => {
         if (result) {
             STATE = newState
             logState()
+            if (STATE === 'INIT') {
+                STATE = 'RUNNING'
+                logState()
+            }
             res.status(200).send(STATE)
             return
         }
     }
     res.status(400).send('bad request or new state is equal to previous state')
+    return
 })
 
 server.get('/state', (req, res) => {

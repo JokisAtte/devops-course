@@ -31,12 +31,8 @@ build-code-job:
 server-start:
   stage: test
   script:
-    - cd api
-    - npm run start:quiet
-    - cd ..
     - docker-compose -f "amqp/docker-compose.yml" up -d --build
-    - cd api
-    - npm run test
+    - docker exec amqp-api-1 npm run test
   artifacts:
     paths:
       - ./api/node_modules/

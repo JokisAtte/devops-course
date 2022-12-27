@@ -6,7 +6,7 @@ const request = supertest()
 
 server.use(express.text({ type: '*/*' }))
 
-describe('PUT /state', async () => {
+describe('PUT /state', () => {
     it('Changes state to paused', (done) => {
         const newState = 'PAUSED'
         supertest(server)
@@ -18,7 +18,7 @@ describe('PUT /state', async () => {
             })
     })
     jest.setTimeout(15000)
-    it('Changes state to running', (done) => {
+    it('Changes state to running', async (done) => {
         const newState = 'RUNNING'
         supertest(server)
             .put('/state')

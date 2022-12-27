@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose ./tests",
+    "test": "jest --verbose --runInBand ./tests",
     "start": "node index.js",
     "start:quiet": "node  index.js &",
     "test:watch": "jest --verbose --watch ./tests"

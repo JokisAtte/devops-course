@@ -1,0 +1,21 @@
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+
+# Official docker compose image.
+image:
+  name: docker/compose:latest
+
+services:
+  - docker:dind
+
+before_script:
+  - docker version
+  - docker-compose version
+
+test:
+  script:
+    - docker-compose -f "amqp/docker-compose.yml" up -d --build
+    - docker exec amqp-api-1 npm run test
+  tags:
+    - needs:privileged
